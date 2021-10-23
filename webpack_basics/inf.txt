@@ -1,0 +1,97 @@
+// webpack is a module bundler:
+    - you can create with it a lot of moduls;
+    - module import from other module (js, img, font, css, ...);
+    - webpack know relationsheep between all modules;
+    - for create one js file (bundle) that userd with html file;
+    
+// dependency graph:
+    - bundle هو الذي يدرس العلاقة بين كل الموديولز و يحاول فهم إحتياجات كل ملف لربطها مع بعض وإنشاء ال;
+
+// zero configuration file:
+    - ./src => الذي يحتوى الموديولز;
+
+// webpack concepts:
+    - Entry => entry point: الملف الذي يعتبر نقطة بداية المشروع:
+        * by default => ./src/index.js;
+        * from webpack.config.js, you can change entry point or put a lot of entry points:
+            """
+                module.exports = {
+                    entry: './path/to/my/entry/file.js',
+                };
+            """
+    - Outut => distribution file:
+        * by default => ./dist/main.js;
+        * from webpack.config.js, you can change output file:
+            """
+                module.exports = {
+                    entry: './path/to/my/entry/file.js',
+                    output: {
+                        path: path.resolve(__dirname, 'dist'),
+                        filename: 'my-first-webpack.bundle.js',
+                    },
+                };
+            """
+    - Loaders => webpack only understands JavaScript and JSON files:
+        * Loaders allow webpack to process other types of files:
+            - .png, .jpg, .css, .scss, web fonts, ...
+            - and convert them into valid modules that can be consumed by your application and added to the dependency graph.
+        * At a high level, loaders have two properties in your webpack configuration:
+            - The 'test' property identifies which file or files should be transformed (.txt, .css, .png, ...);
+            - The 'use' property indicates which loader should be used to do the transforming.
+            """
+                module.exports = {
+                    entry: './path/to/my/entry/file.js',
+                    output: {
+                        path: path.resolve(__dirname, 'dist'),
+                        filename: 'my-first-webpack.bundle.js',
+                    },
+                    module: {
+                        rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+                        // rules: [{test: /file type/, use: 'loader type'}];
+                    },
+                };
+            """
+    - Plugins => you can add Plugins to do some tasks on your project:
+        - minify files;
+        - .............;
+            """
+                module.exports = {
+                    entry: './path/to/my/entry/file.js',
+                    output: {
+                        path: path.resolve(__dirname, 'dist'),
+                        filename: 'my-first-webpack.bundle.js',
+                    },
+                    module: {
+                        rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+                        // rules: [{test: /file type/, use: 'loader type'}];
+                    },
+                    plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+                };
+            """
+    - Mode: By setting the mode parameter to either development, production or none, you can enable webpack's built-in optimizations that correspond to each environment. The default value is production:
+        """
+            module.exports = {
+                mode: 'production',
+                // or mode: 'development',
+                // or mode: 'none'
+            };
+        """
+
+// Module Resolution => how to webpack identify modules:
+    - A resolver is a library which helps in locating a module by its absolute path.
+    - Using enhanced-resolve, webpack can resolve three kinds of file paths:
+        * Absolute paths => 
+            - import '/home/me/file';
+            - import 'C:\\Users\\me\\file';
+        * Relative paths:
+            - import '../src/file1';
+            - import './file1';
+        * Module paths:
+            - import 'module';
+            - import 'module/lib/file';
+
+// code splitting:
+    - split bundle file to a lot of bundles for best performance;
+    - إلى عدة وحداث تشتغل كل وحدة عند طلبها و لا تشتغل كل الوحداث معا bundle نقوم بتقسيم ال;
+    - because that we get the best performance;
+    - Principle that react components based on it => code splitting;
